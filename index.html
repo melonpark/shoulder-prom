@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>어깨 기능 설문 (ASES · KSS · Constant)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--bg:#F6F7F9;--paper:#FFF;--ink:#16212B;--ink-2:#4B5763;--line:#D9DDE3;--sel:#3B4A7A;--sel-soft:#E6E9F4;--warn:#9B3B2E;--ok:#1B7F5C}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.45;padding-bottom:120px;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+header h1{font-size:20px;font-weight:700}header h1 small{font-weight:400;color:var(--ink-2);font-size:13px;margin-left:8px}
+.mode{font-size:13px;color:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--paper);white-space:nowrap}
+.steps{display:flex;gap:6px;margin-bottom:16px}.steps span{flex:1;height:6px;border-radius:3px;background:var(--line)}.steps span.done{background:var(--ok)}.steps span.cur{background:var(--sel)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.card h2{font-size:15px;font-weight:600;color:var(--ink-2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.card h2 b{font-weight:600;color:var(--ink);font-size:16px}.card h2 .pts{font-size:13px;font-weight:400;text-align:right}
+.intro{font-size:15px;color:var(--ink-2);margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid .full{grid-column:1/-1}
+label.f{display:block;font-size:13px;color:var(--ink-2);margin-bottom:4px}
+input[type=text],input[type=date],input[type=number]{width:100%;font:inherit;font-size:18px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#FAFBFC;color:var(--ink)}
+input:focus,button:focus-visible{outline:2px solid var(--sel);outline-offset:1px}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}.seg button{flex:1;font:inherit;font-size:15px;padding:11px 0;border:0;background:#FAFBFC;color:var(--ink-2);cursor:pointer}.seg button.on{background:var(--sel);color:#fff}
+.q{border-top:1px solid var(--line);padding:14px 0}.q:first-child{border-top:0;padding-top:4px}
+.q .t{font-size:17px;font-weight:600;margin-bottom:8px;display:flex;gap:8px}.q .t .no{color:var(--ink-2);font-weight:500;min-width:26px}
+.scale{display:flex;gap:6px;flex-wrap:wrap}.scale button{flex:1;min-width:44px;font:inherit;font-size:19px;font-weight:600;min-height:52px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink-2);cursor:pointer}.scale button.on{background:var(--sel);border-color:var(--sel);color:#fff}
+.anchors{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-top:4px;padding:0 4px}.anchors.big{font-size:16px;font-weight:600;color:var(--ink);margin:2px 0 10px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font:inherit;font-size:17px;text-align:left;width:100%;min-height:50px}
+.opt .pt{font-size:13px;color:var(--ink-2);flex-shrink:0}.opt.on{background:var(--sel-soft);border-color:var(--sel);color:var(--sel)}.opt.on .pt{color:var(--sel);font-weight:600}
+.chk{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:16px;cursor:pointer;user-select:none}.chk input{width:22px;height:22px;accent-color:var(--sel)}
+.sub{display:flex;justify-content:space-between;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:10px;margin-top:6px}.sub b{color:var(--ink);font-variant-numeric:tabular-nums}
+.hint{font-size:13px;color:var(--ink-2);margin-top:8px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);padding:12px 16px;box-shadow:0 -6px 20px rgba(22,33,43,.06)}
+.bar .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px}.bar .st{font-size:14px;color:var(--ink-2)}.bar .miss{font-size:13px;color:var(--warn)}
+.btns{margin-left:auto;display:flex;gap:8px}
+.btn{font:inherit;font-size:16px;font-weight:600;padding:12px 18px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn.p{background:var(--sel);color:#fff;border-color:var(--sel)}.btn.big{width:100%;padding:16px;font-size:18px}.btn:disabled{opacity:.4;cursor:default}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.qrwrap{text-align:center;padding:8px 0}.qrwrap>div:first-child{display:inline-block;padding:12px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.qrurl{font-size:12px;color:var(--ink-2);word-break:break-all;margin-top:8px}
+.summary{width:100%;border-collapse:collapse;font-size:16px}.summary td{padding:9px 4px;border-top:1px solid var(--line)}.summary td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.done{text-align:center;padding:16px 8px}.done .big{font-size:26px;font-weight:700;margin-bottom:6px}.done p{color:var(--ink-2)}
+.hidden{display:none!important}
+.clin{border-left:4px solid var(--warn)}
+@media (max-width:520px){.grid{grid-template-columns:1fr}}
+@media print{.bar,.tools,.mode,.steps,.noprint{display:none!important}body{background:#fff;padding:0}.card{break-inside:avoid;border-color:#bbb}}
+</style></head><body><div class="wrap">
+<header><h1>어깨 기능 설문 <small>서울성모병원 정형외과</small></h1><span class="mode" id="modeTag">외래</span></header>
+<div class="steps" id="steps"></div>
+
+<div class="page" data-page="info">
+<section class="card"><h2><b>환자 정보</b><span class="pts">직원 입력</span></h2>
+  <div class="grid">
+    <div><label class="f">등록번호</label><input type="text" id="pid" inputmode="numeric" placeholder="예) 12345678"></div>
+    <div><label class="f">이름 (선택)</label><input type="text" id="pname" placeholder="홍길동"></div>
+    <div><label class="f">작성일</label><input type="date" id="pdate"></div>
+    <div><label class="f">수술(평가) 어깨</label><div class="seg" data-key="side"><button data-v="R">오른쪽</button><button data-v="L">왼쪽</button></div></div>
+    <div class="full"><label class="f">시점</label><div class="seg" data-key="visit"><button data-v="preop">술전</button><button data-v="4w">4주</button><button data-v="8w">8주</button><button data-v="3m">3개월</button><button data-v="6m">6개월</button><button data-v="12m">12개월</button><button data-v="other">기타</button></div></div>
+    <div class="full"><label class="f">시행할 설문</label>
+      <div class="opts" style="flex-direction:row;flex-wrap:wrap"><label class="chk"><input type="checkbox" id="useASES" checked>ASES</label><label class="chk"><input type="checkbox" id="useKSS" checked>Korean Shoulder Score</label><label class="chk"><input type="checkbox" id="useCS" checked>Constant Score</label></div></div>
+  </div>
+</section>
+<section class="card noprint" id="qrCard"><h2><b>환자 휴대폰으로 보내기</b><span class="pts">문자 발송 또는 QR</span></h2>
+  <div class="tools"><button class="btn" id="bQR">QR 만들기</button><button class="btn" id="bLink">링크 복사</button></div>
+  <div class="qrwrap hidden" id="qrbox"><div id="qr"></div><div class="qrurl" id="qrurl"></div><div class="hint">환자가 작성을 마치면 완료 화면에 결과 QR이 뜹니다. 그 QR을 이 태블릿 카메라로 찍으면 결과가 이 페이지에 자동으로 열립니다.</div></div>
+</section>
+<button class="btn p big" id="bStart">환자에게 태블릿 건네기 →</button>
+</div>
+
+<!-- ASES -->
+<div class="page hidden" data-page="ases">
+<section class="card"><div class="intro"><b>ASES Shoulder Score</b> — <span class="sideName"></span> 어깨에 대해 답해 주세요.</div></section>
+<section class="card"><h2><b>통증 설문지</b></h2>
+  <div class="q"><div class="t"><span class="no">1.</span><span>평상시 하는 일</span></div><input type="text" id="a_work" placeholder="예) 가사, 사무직, 농사"></div>
+  <div class="q"><div class="t"><span class="no">2.</span><span>평상시 하는 여가활동/스포츠</span></div><input type="text" id="a_sport" placeholder="예) 등산, 수영, 없음"></div>
+  <div class="q" data-yn="a_night"><div class="t"><span class="no">3.</span><span>밤에 어깨가 아프세요?</span></div><div class="seg"><button data-v="1">예</button><button data-v="0">아니오</button></div></div>
+  <div class="q" data-yn="a_mild"><div class="t"><span class="no">4.</span><span>파라세타몰(아세트아미노펜), 디클로페낙, 이부프로펜과 같은 진통제를 복용하나요?</span></div><div class="seg"><button data-v="1">예</button><button data-v="0">아니오</button></div></div>
+  <div class="q" data-yn="a_strong"><div class="t"><span class="no">5.</span><span>코데인, 트라마돌, 모르핀과 같은 강한 진통제를 복용합니까?</span></div><div class="seg"><button data-v="1">예</button><button data-v="0">아니오</button></div></div>
+  <div class="q"><div class="t"><span class="no">6.</span><span>하루에 평균 몇 알씩 드시나요?</span></div><input type="number" id="a_pills" inputmode="numeric" placeholder="0" style="max-width:160px"></div>
+  <div class="q"><div class="t"><span class="no">7.</span><span>통증의 강도 (얼마나 아픈지 표시하세요)</span></div>
+    <div class="anchors big"><span>0 = 전혀 안아프다</span><span>10 = 굉장히 아프다</span></div>
+    <label class="f">쉴 때</label><div class="scale" id="a_vrest"></div>
+    <label class="f" style="margin-top:10px">움직일 때</label><div class="scale" id="a_vmove"></div></div>
+</section>
+<section class="card"><h2><b>일상생활 동작</b><span class="pts">0 전혀 못한다 · 1 어렵다 · 2 약간 어렵다 · 3 정상이다</span></h2><div class="items" id="a_adl"></div>
+  <div class="sub"><span>ADL 합계</span><b><span id="a_adlSum">—</span> / 30</b></div>
+  <div class="sub" style="font-size:17px"><span>ASES Score</span><b><span id="a_total">—</span> / 100</b></div></section>
+</div>
+
+<!-- KSS -->
+<div class="page hidden" data-page="kss">
+<section class="card"><div class="intro"><b>Korean Shoulder Score</b> — <span class="sideName"></span> 어깨에 대해 답해 주세요. 다음 질문들은 환자분의 정확한 진찰을 위하여 준비된 설문지입니다.</div></section>
+<section class="card"><h2><b>I. 기능</b><span class="pts">30점</span></h2>
+  <div class="intro">아픈 팔로 당신이 할 수 있는 정도를 표시하세요.<br>0 = 할 수 없다 · 1 = 매우 어렵다(타인의 도움을 받아야 한다) · 2 = 할 수 있지만 부자연스럽다 · 3 = 거의 또는 전혀 문제없다</div>
+  <div class="items" id="k_func"></div><div class="sub"><span>기능 점수</span><b><span id="k_funcSum">—</span> / 30</b></div></section>
+<section class="card"><h2><b>II. 통증</b><span class="pts">20점 · 현재 상태</span></h2>
+  <div class="opts" id="k_pain"><button class="opt" data-v="20">1. 통증이 거의 없다.<span class="pt">20</span></button><button class="opt" data-v="15">2. 가벼운 통증<span class="pt">15</span></button><button class="opt" data-v="10">3. 통증은 있으나 약을 먹을 정도는 아니다.<span class="pt">10</span></button><button class="opt" data-v="5">4. 통증이 있어서 약을 먹을 정도다.<span class="pt">5</span></button><button class="opt" data-v="0">5. 약을 먹어도 통증이 지속된다.<span class="pt">0</span></button></div></section>
+<section class="card"><h2><b>III. 자가 평가</b><span class="pts">10점</span></h2>
+  <div class="intro">치료 전과 비교해서 당신의 어깨는 현재 몇 점이라고 생각하십니까?</div>
+  <div class="anchors big"><span>0 = 비정상</span><span>10 = 정상</span></div><div class="scale" id="k_self"></div></section>
+</div>
+
+<!-- Constant -->
+<div class="page hidden" data-page="cs">
+<section class="card"><div class="intro"><b>Constant Shoulder Score</b> — <span class="sideName"></span> 어깨에 대해 답해 주세요.</div></section>
+<section class="card"><h2><b>통증 (쉴 때)</b><span class="pts">15점</span></h2>
+  <div class="anchors big"><span>0 = 심하게 아프다</span><span>15 = 전혀 안아프다</span></div>
+  <div class="scale" id="c_pain"></div>
+  <div class="anchors"><span>심하게</span><span>아프다</span><span>조금 아프다</span><span>전혀 안아프다</span></div></section>
+<section class="card"><h2><b>활동수준</b><span class="pts">20점</span></h2>
+  <div class="q"><div class="t"><span class="no">1.</span><span>일상 작업 가능 정도</span></div><div class="anchors"><span>0 = 지장이 아주 많다</span><span>2 = 절반정도 지장</span><span>4 = 전혀 문제 없다</span></div><div class="scale" id="c_work"></div></div>
+  <div class="q"><div class="t"><span class="no">2.</span><span>여가활동/스포츠 가능 정도</span></div><div class="anchors"><span>0 = 지장이 아주 많다</span><span>4 = 전혀 문제 없다</span></div><div class="scale" id="c_rec"></div></div>
+  <div class="q"><div class="t"><span class="no">3.</span><span>수면 방해 정도</span></div><div class="anchors"><span>0 = 잠을 못잔다</span><span>2 = 잠을 잘 잔다</span></div><div class="scale" id="c_sleep"></div></div>
+  <div class="q"><div class="t"><span class="no">4.</span><span>사용가능 높이 (현재 상태)</span></div>
+    <div class="opts" id="c_height"><button class="opt" data-v="0">허리 아래<span class="pt">0</span></button><button class="opt" data-v="2">허리까지<span class="pt">2</span></button><button class="opt" data-v="4">흉골까지<span class="pt">4</span></button><button class="opt" data-v="6">목까지<span class="pt">6</span></button><button class="opt" data-v="8">정수리까지<span class="pt">8</span></button><button class="opt" data-v="10">머리 위<span class="pt">10</span></button></div></div>
+  <div class="sub"><span>환자 항목 소계 (통증+활동)</span><b><span id="c_ptSum">—</span> / 35</b></div></section>
+</div>
+
+<!-- 완료 -->
+<div class="page hidden" data-page="done">
+<section class="card"><div class="done"><div class="big">작성이 끝났습니다. 감사합니다.</div><p id="doneMsg">태블릿을 직원에게 돌려주세요.</p></div>
+  <div class="qrwrap hidden" id="qr2box"><div id="qr2"></div><p class="hint">진료실에서 이 QR 코드를 보여주세요.</p></div></section>
+<section class="card" id="staffCard"><h2><b>결과 요약</b><span class="pts" id="sumMeta"></span></h2><table class="summary" id="sumTbl"></table></section>
+
+<section class="card noprint clin" id="kssClin"><h2><b>KSS 의료진 항목</b><span class="pts">ROM 20 · 근력 10 · 지구력 10</span></h2>
+  <div class="q"><div class="t"><span>전방 거상</span></div><div class="opts" id="k_fe"><button class="opt" data-v="0">0도<span class="pt">0</span></button><button class="opt" data-v="2">1~40도<span class="pt">2</span></button><button class="opt" data-v="4">41~80도<span class="pt">4</span></button><button class="opt" data-v="6">81~120도<span class="pt">6</span></button><button class="opt" data-v="8">121~160도<span class="pt">8</span></button><button class="opt" data-v="10">161도 이상<span class="pt">10</span></button></div></div>
+  <div class="q"><div class="t"><span>외회전 (팔을 몸통에 붙이고)</span></div><div class="opts" id="k_er"><button class="opt" data-v="0">0도<span class="pt">0</span></button><button class="opt" data-v="1">1~15도<span class="pt">1</span></button><button class="opt" data-v="2">16~30도<span class="pt">2</span></button><button class="opt" data-v="3">31~45도<span class="pt">3</span></button><button class="opt" data-v="4">46~60도<span class="pt">4</span></button><button class="opt" data-v="5">61도 이상<span class="pt">5</span></button></div></div>
+  <div class="q"><div class="t"><span>내회전 (척추레벨)</span></div><div class="opts" id="k_ir"><button class="opt" data-v="0">엉덩이 이하<span class="pt">0</span></button><button class="opt" data-v="1">L5 이하<span class="pt">1</span></button><button class="opt" data-v="3">L1~L4<span class="pt">3</span></button><button class="opt" data-v="5">T12 이상<span class="pt">5</span></button></div></div>
+  <div class="q"><div class="t"><span>근력</span></div><div class="opts" id="k_str"><button class="opt" data-v="10">Normal<span class="pt">10</span></button><button class="opt" data-v="8">Good<span class="pt">8</span></button><button class="opt" data-v="6">Fair<span class="pt">6</span></button><button class="opt" data-v="4">Poor<span class="pt">4</span></button><button class="opt" data-v="2">Trace<span class="pt">2</span></button><button class="opt" data-v="0">Zero<span class="pt">0</span></button></div></div>
+  <div class="q"><div class="t"><span>지구력 — 지속시간(초)</span></div><div class="intro">2kg 아령을 scapular plane에 45도, palm down 상태에서 유지하는 시간. 10초 만점.</div><input type="number" id="k_end" inputmode="numeric" placeholder="초" style="max-width:160px"></div>
+  <div class="sub" style="font-size:17px"><span>KSS Total</span><b><span id="k_total">—</span> / 100</b></div></section>
+
+<section class="card noprint clin" id="csClin"><h2><b>Constant 의료진 항목</b><span class="pts">ROM 40 · 외전력 25</span></h2>
+  <div class="q"><div class="t"><span>전방굴곡 (Flexion)</span></div><div class="scale" id="c_flex"></div><div class="anchors"><span>&lt;30</span><span>31–60</span><span>61–90</span><span>91–120</span><span>121–150</span><span>&gt;150</span></div></div>
+  <div class="q"><div class="t"><span>외전 (Abduction)</span></div><div class="scale" id="c_abd"></div><div class="anchors"><span>&lt;30</span><span>31–60</span><span>61–90</span><span>91–120</span><span>121–150</span><span>&gt;150</span></div></div>
+  <div class="q"><div class="t"><span>내회전 (Internal Rotation)</span></div><div class="intro">엄지 손가락으로 해부학적 랜드마크를 가리키세요.</div><div class="opts" id="c_ir"><button class="opt" data-v="0">대퇴부 측면<span class="pt">0</span></button><button class="opt" data-v="2">엉덩이 뒤<span class="pt">2</span></button><button class="opt" data-v="4">천골관절<span class="pt">4</span></button><button class="opt" data-v="6">허리<span class="pt">6</span></button><button class="opt" data-v="8">제 12번 흉추<span class="pt">8</span></button><button class="opt" data-v="10">견갑골 사이 레벨<span class="pt">10</span></button></div></div>
+  <div class="q"><div class="t"><span>외회전 (External Rotation) — 맞는 것에 모두 체크</span></div><div class="opts" id="c_er"><label class="chk"><input type="checkbox">손은 머리 뒤로, 팔꿈치는 앞으로 (2)</label><label class="chk"><input type="checkbox">손은 머리 뒤로, 팔꿈치는 뒤로 (2)</label><label class="chk"><input type="checkbox">손은 정수리에, 팔꿈치는 앞으로 (2)</label><label class="chk"><input type="checkbox">손은 정수리에, 팔꿈치는 뒤로 (2)</label><label class="chk"><input type="checkbox">팔의 완전 거상 (2)</label></div></div>
+  <div class="q"><div class="t"><span>외전력 (Abduction Power)</span></div><div class="grid" style="align-items:end"><div><label class="f">kg</label><input type="number" id="c_kg" inputmode="decimal" step="0.1" placeholder="kg"></div><div class="hint" id="c_lbHint" style="margin:0 0 12px">lb 환산 → 점수(최대 25)</div></div></div>
+  <div class="sub"><span>통증 15 · 활동 20 · ROM 40 · Power 25</span><b id="c_parts">—</b></div>
+  <div class="sub" style="font-size:17px"><span>Constant Score</span><b><span id="c_total">—</span> / 100</b></div></section>
+
+<section class="card noprint" id="toolCard"><h2><b>직원 메뉴</b></h2>
+  <div class="tools"><button class="btn" id="bCopy">EMR 형식 복사</button><button class="btn" id="bCSV">CSV 다운로드</button><button class="btn" id="bJSON">JSON 다운로드</button><button class="btn" id="bPrint">인쇄 / PDF</button><button class="btn" id="bSend">시트로 전송</button><button class="btn p" id="bNew">새 환자</button></div>
+  <div class="hint" id="sendHint"></div></section>
+</div>
+</div>
+
+<div class="bar"><div class="in"><span class="st" id="stepTag"></span><span class="miss" id="missTag"></span>
+  <div class="btns"><button class="btn" id="bPrev">이전</button><button class="btn p" id="bNext">다음 →</button></div></div></div>
+
+<script>
+(function(){
+// ===== 설정 =====
+const SAVE_URL='';   // Google Apps Script 웹앱 URL (비우면 시트 저장 안 함)
+const AUTO_RESET_SEC=0;
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const P=new URLSearchParams(location.search);
+const MODE=P.get('mode')==='patient'?'patient':'clinic';
+const SIDE_KO={R:'오른쪽',L:'왼쪽'};
+const VISIT_KO={preop:'술전','4w':'4주','8w':'8주','3m':'3개월','6m':'6개월','12m':'12개월',other:'기타'};
+const seg={side:'',visit:''};
+const n=v=>v===null||v===undefined||v===''?null:+v;
+const scale=(id,vals,onpick)=>{const el=$(id);vals.forEach(v=>{const b=document.createElement('button');b.textContent=v;b.dataset.v=v;b.onclick=()=>{onpick(v);render();};el.appendChild(b);});};
+const mark=(id,val)=>$$(id+' button, '+id+' .opt').forEach(b=>b.classList.toggle('on',val!==null&&+b.dataset.v===val));
+const optGroup=(id,set)=>$$(id+' .opt').forEach(b=>b.onclick=()=>{set(+b.dataset.v);render();});
+const R=(x,d=1)=>x===null?null:Math.round(x*10**d)/10**d;
+
+// ===== ASES =====
+const A_ADL=['혼자서 윗도리를 입을 수 있다.','아픈 쪽으로 모로 누워 있을 수 있다.','혼자서 등을 닦을 수 있다.','혼자서 화장실에서 처리 할 수 있다.','혼자서 머리를 빗을 수 있다.','높은 선반에 손이 닿는다.','4.5kg 가량을 어깨 위로 들 수 있다.','공을 어깨를 사용해서 던질 수 있다.','평소에 하던 일을 하기가 어렵다.','평소 스포츠/레저 활동을 하기 어렵다.'];
+const a={night:null,mild:null,strong:null,vrest:null,vmove:null,adl:new Array(10).fill(null)};
+$$('[data-yn]').forEach(q=>q.querySelectorAll('button').forEach(b=>b.onclick=()=>{a[q.dataset.yn.slice(2)]=+b.dataset.v;render();}));
+scale('#a_vrest',[0,1,2,3,4,5,6,7,8,9,10],v=>a.vrest=v);scale('#a_vmove',[0,1,2,3,4,5,6,7,8,9,10],v=>a.vmove=v);
+A_ADL.forEach((t,i)=>{const q=document.createElement('div');q.className='q';q.innerHTML=`<div class="t"><span class="no">${i+1}.</span><span>${t}</span></div><div class="scale">${[0,1,2,3].map(v=>`<button data-v="${v}">${v}</button>`).join('')}</div>`;q.querySelectorAll('button').forEach(b=>b.onclick=()=>{a.adl[i]=+b.dataset.v;render();});$('#a_adl').appendChild(q);});
+const aAdl=()=>a.adl.every(v=>v!==null)?a.adl.reduce((s,v)=>s+v,0):null;
+const aVas=()=>a.vmove; // 점수 계산에 쓰는 VAS: 움직일 때
+const aTotal=()=>{const d=aAdl(),v=aVas();return d===null||v===null?null:R((10-v)*5+d*5/3,1);};
+const aMissing=()=>['night','mild','strong','vrest','vmove'].filter(k=>a[k]===null).length+a.adl.filter(v=>v===null).length;
+
+// ===== KSS =====
+const K_FUNC=['세수를 한다.','머리를 빗는다.','용변 후 휴지를 사용한다. 혹은 바지 뒷주머니에서 지갑을 꺼낸다.','옷을 입는다. (와이셔츠나 블라우스)','식사를 한다. (젓가락, 수저 사용 가능)','아픈 쪽으로 누워서 잔다.','머리 위 선반의 물건을 잡는다.','가방이나 장바구니를 든다.','창문이나 미닫이문을 열고 닫는다.','직장 생활/집안 일을 한다.'];
+const k={func:new Array(10).fill(null),pain:null,self:null,fe:null,er:null,ir:null,str:null,end:null};
+K_FUNC.forEach((t,i)=>{const q=document.createElement('div');q.className='q';q.innerHTML=`<div class="t"><span class="no">${i+1}.</span><span>${t}</span></div><div class="scale">${[0,1,2,3].map(v=>`<button data-v="${v}">${v}</button>`).join('')}</div>`;q.querySelectorAll('button').forEach(b=>b.onclick=()=>{k.func[i]=+b.dataset.v;render();});$('#k_func').appendChild(q);});
+optGroup('#k_pain',v=>k.pain=v);scale('#k_self',[0,1,2,3,4,5,6,7,8,9,10],v=>k.self=v);
+optGroup('#k_fe',v=>k.fe=v);optGroup('#k_er',v=>k.er=v);optGroup('#k_ir',v=>k.ir=v);optGroup('#k_str',v=>k.str=v);
+$('#k_end').addEventListener('input',e=>{k.end=n(e.target.value);render();});
+const kFunc=()=>k.func.every(v=>v!==null)?k.func.reduce((s,v)=>s+v,0):null;
+const kPatient=()=>{const f=kFunc();return f===null||k.pain===null||k.self===null?null:f+k.pain+k.self;};
+const kRom=()=>k.fe===null||k.er===null||k.ir===null?null:k.fe+k.er+k.ir;
+const kEnd=()=>k.end===null?null:Math.min(10,Math.max(0,Math.round(k.end)));
+const kTotal=()=>{const p=kPatient(),r=kRom(),e=kEnd();return p===null||r===null||k.str===null||e===null?null:p+r+k.str+e;};
+const kMissing=()=>k.func.filter(v=>v===null).length+(k.pain===null?1:0)+(k.self===null?1:0);
+
+// ===== Constant =====
+const c={pain:null,work:null,rec:null,sleep:null,height:null,flex:null,abd:null,ir:null,kg:null};
+scale('#c_pain',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],v=>c.pain=v);
+scale('#c_work',[0,1,2,3,4],v=>c.work=v);scale('#c_rec',[0,1,2,3,4],v=>c.rec=v);scale('#c_sleep',[0,1,2],v=>c.sleep=v);optGroup('#c_height',v=>c.height=v);
+scale('#c_flex',[0,2,4,6,8,10],v=>c.flex=v);scale('#c_abd',[0,2,4,6,8,10],v=>c.abd=v);optGroup('#c_ir',v=>c.ir=v);
+$$('#c_er input').forEach(x=>x.addEventListener('change',render));$('#c_kg').addEventListener('input',e=>{c.kg=n(e.target.value);render();});
+const cAct=()=>[c.work,c.rec,c.sleep,c.height].some(v=>v===null)?null:c.work+c.rec+c.sleep+c.height;
+const cPatient=()=>c.pain===null||cAct()===null?null:c.pain+cAct();
+const cEr=()=>$$('#c_er input').filter(x=>x.checked).length*2;
+const cRom=()=>c.flex===null||c.abd===null||c.ir===null?null:c.flex+c.abd+c.ir+cEr();
+const cLb=()=>c.kg===null?null:R(c.kg*2.20462,1);
+const cPow=()=>c.kg===null?null:Math.min(25,Math.round(c.kg*2.20462));
+const cTotal=()=>{const p=cPatient(),r=cRom(),w=cPow();return p===null||r===null||w===null?null:p+r+w;};
+const cMissing=()=>['pain','work','rec','sleep','height'].filter(x=>c[x]===null).length;
+
+// ===== 흐름 =====
+const use={ases:true,kss:true,cs:true};
+let pages=[],cur=0;
+const buildPages=()=>{pages=['info'];if(use.ases)pages.push('ases');if(use.kss)pages.push('kss');if(use.cs)pages.push('cs');pages.push('done');};
+const missing=p=>p==='ases'?aMissing():p==='kss'?kMissing():p==='cs'?cMissing():p==='info'?(($('#pid').value&&seg.side)?0:1):0;
+const PT={info:'환자 정보',ases:'ASES',kss:'KSS',cs:'Constant',done:'완료'};
+function go(i){cur=Math.max(0,Math.min(pages.length-1,i));$$('.page').forEach(p=>p.classList.toggle('hidden',p.dataset.page!==pages[cur]));window.scrollTo(0,0);if(pages[cur]==='done')onDone();render();}
+function render(){
+  $$('.seg[data-key]').forEach(s=>s.querySelectorAll('button').forEach(b=>b.classList.toggle('on',seg[s.dataset.key]===b.dataset.v)));
+  $$('.sideName').forEach(e=>e.textContent=SIDE_KO[seg.side]||'');
+  $$('[data-yn]').forEach(q=>q.querySelectorAll('button').forEach(b=>b.classList.toggle('on',a[q.dataset.yn.slice(2)]===+b.dataset.v)));
+  mark('#a_vrest',a.vrest);mark('#a_vmove',a.vmove);$$('#a_adl .q').forEach((q,i)=>q.querySelectorAll('button').forEach(b=>b.classList.toggle('on',a.adl[i]===+b.dataset.v)));
+  $('#a_adlSum').textContent=aAdl()??'—';$('#a_total').textContent=aTotal()??'—';
+  $$('#k_func .q').forEach((q,i)=>q.querySelectorAll('button').forEach(b=>b.classList.toggle('on',k.func[i]===+b.dataset.v)));
+  mark('#k_pain',k.pain);mark('#k_self',k.self);mark('#k_fe',k.fe);mark('#k_er',k.er);mark('#k_ir',k.ir);mark('#k_str',k.str);
+  $('#k_funcSum').textContent=kFunc()??'—';$('#k_total').textContent=kTotal()??'—';
+  ['pain','work','rec','sleep','height','flex','abd','ir'].forEach(x=>mark('#c_'+x,c[x]));
+  $('#c_ptSum').textContent=cPatient()??'—';$('#c_lbHint').textContent=c.kg===null?'lb 환산 → 점수(최대 25)':`${cLb()} lb → ${cPow()}점`;
+  $('#c_parts').textContent=`${c.pain??'—'} · ${cAct()??'—'} · ${cRom()??'—'} · ${cPow()??'—'}`;$('#c_total').textContent=cTotal()??'—';
+  $('#steps').innerHTML=pages.map((p,i)=>`<span class="${i<cur?'done':i===cur?'cur':''}"></span>`).join('');
+  const p=pages[cur],m=missing(p);
+  $('#stepTag').textContent=`${cur+1} / ${pages.length} · ${PT[p]}`;
+  $('#missTag').textContent=m?(p==='info'?'등록번호·어깨 선택 필요':`미응답 ${m}개`):'';
+  $('#bNext').disabled=m>0;$('#bNext').textContent=cur===pages.length-2?'완료':'다음 →';
+  $('#bPrev').classList.toggle('hidden',cur===0||p==='done');$('#bNext').classList.toggle('hidden',p==='done'||p==='info');
+  $('.bar').classList.toggle('hidden',p==='done'&&MODE==='patient');
+  if(p==='done')renderSummary();
+}
+$('#bNext').onclick=()=>go(cur+1);$('#bPrev').onclick=()=>go(cur-1);
+const readUse=()=>{use.ases=$('#useASES').checked;use.kss=$('#useKSS').checked;use.cs=$('#useCS').checked;};
+$('#bStart').onclick=()=>{if(!$('#pid').value){alert('등록번호를 입력하세요.');$('#pid').focus();return;}if(!seg.side){alert('어깨(오른쪽/왼쪽)를 선택하세요.');return;}readUse();buildPages();go(1);};
+$$('.seg[data-key]').forEach(s=>s.querySelectorAll('button').forEach(b=>b.onclick=()=>{seg[s.dataset.key]=b.dataset.v;render();}));
+['pid','pname','a_work','a_sport','a_pills'].forEach(id=>$('#'+id).addEventListener('input',render));
+
+// ===== 데이터 =====
+const info=()=>({pid:$('#pid').value,name:$('#pname').value,date:$('#pdate').value,side:seg.side,visit:seg.visit});
+function record(){const r=info();const o={...r,side_ko:SIDE_KO[r.side]||'',visit_ko:VISIT_KO[r.visit]||''};
+  if(use.ases){o.ases_work=$('#a_work').value;o.ases_sport=$('#a_sport').value;o.ases_night=a.night??'';o.ases_mild_analg=a.mild??'';o.ases_strong_analg=a.strong??'';o.ases_pills=$('#a_pills').value;o.ases_vas_rest=a.vrest??'';o.ases_vas_move=a.vmove??'';a.adl.forEach((v,i)=>o['ases_adl'+(i+1)]=v??'');o.ases_adl_sum=aAdl()??'';o.ases_total=aTotal()??'';}
+  if(use.kss){k.func.forEach((v,i)=>o['kss_f'+(i+1)]=v??'');o.kss_func=kFunc()??'';o.kss_pain=k.pain??'';o.kss_self=k.self??'';o.kss_fe=k.fe??'';o.kss_er=k.er??'';o.kss_ir=k.ir??'';o.kss_rom=kRom()??'';o.kss_strength=k.str??'';o.kss_endur_sec=k.end??'';o.kss_endur=kEnd()??'';o.kss_total=kTotal()??'';}
+  if(use.cs){o.cs_pain=c.pain??'';o.cs_work=c.work??'';o.cs_rec=c.rec??'';o.cs_sleep=c.sleep??'';o.cs_height=c.height??'';o.cs_activity=cAct()??'';o.cs_flex=c.flex??'';o.cs_abd=c.abd??'';o.cs_ir=c.ir??'';o.cs_er=cEr();o.cs_rom=cRom()??'';o.cs_kg=c.kg??'';o.cs_lb=cLb()??'';o.cs_power=cPow()??'';o.cs_total=cTotal()??'';}
+  o.mode=MODE;o.saved_at=new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});return o;}
+const yn=v=>v===1?'예':v===0?'아니오':'';
+function emrText(){const r=info(),L=[],S=SIDE_KO[r.side]||'';
+  if(use.ases){L.push(`[ASES Shoulder Score Index] ${S}`,`1. 평상시 하는 일 : ${$('#a_work').value}`,`2. 평상시 하는 여가활동/스포츠 : ${$('#a_sport').value}`,`3. 밤에 어깨가 아프세요? : ${yn(a.night)}`,`4. 진통제 복용 : ${yn(a.mild)}`,`5. 강한 진통제 복용 : ${yn(a.strong)}`,`6. 하루 평균 알 수 : ${$('#a_pills').value}`,`7. 통증 강도 — 쉴 때 ${a.vrest??''} / 움직일 때 ${a.vmove??''}`);A_ADL.forEach((t,i)=>L.push(`${i+1}. ${t} : ${a.adl[i]??''}`));L.push(`ADL score Sum : ${aAdl()??''}`,`ASES Score : ${aTotal()??''} /100`,'');}
+  if(use.kss){L.push(`[Korean Shoulder Score] ${S}`);K_FUNC.forEach((t,i)=>L.push(`${i+1}. ${t} : ${k.func[i]??''}`));L.push(`I. 기능 : ${kFunc()??''} /30`,`II. 통증 : ${k.pain??''} /20`,`III. 자가 평가 : ${k.self??''} /10`,`IV. 운동 범위 : 전방거상 ${k.fe??''} / 외회전 ${k.er??''} / 내회전 ${k.ir??''} = ${kRom()??''} /20`,`V. 근력 : ${k.str??''} /10 · 지구력 : ${k.end??''}초 → ${kEnd()??''} /10`,`VI. 총 점수 : ${kTotal()??''} /100`,'');}
+  if(use.cs){L.push(`[Constant Shoulder Score] ${S}`,`통증(쉴 때) : ${c.pain??''} /15`,`활동수준 : 일상작업 ${c.work??''} / 여가 ${c.rec??''} / 수면 ${c.sleep??''} / 사용높이 ${c.height??''} = ${cAct()??''} /20`,`운동범위 : 전방굴곡 ${c.flex??''} / 외전 ${c.abd??''} / 내회전 ${c.ir??''} / 외회전 ${cEr()} = ${cRom()??''} /40`,`외전력 : ${c.kg??''} kg (${cLb()??''} lb) → ${cPow()??''} /25`,`Constant Shoulder Score : ${cTotal()??''} /100`);}
+  return L.join('\n');}
+function renderSummary(){const r=info();$('#sumMeta').textContent=`${r.pid} ${r.name} · ${SIDE_KO[r.side]||''} 어깨 · ${VISIT_KO[r.visit]||''} · ${r.date}`;const rows=[];
+  if(use.ases)rows.push(['ASES — VAS 쉴 때 / 움직일 때',`${a.vrest??'—'} / ${a.vmove??'—'}`],['ASES — ADL (/30)',aAdl()??'—'],['ASES Score (/100)',aTotal()??'—']);
+  if(use.kss){const t=kTotal();rows.push(['KSS 환자 항목 (/60)',kPatient()??'—'],['KSS Total (/100)',t===null?'의료진 입력 대기':t]);}
+  if(use.cs){const t=cTotal();rows.push(['Constant 환자 항목 (/35)',cPatient()??'—'],['Constant Score (/100)',t===null?'의료진 입력 대기':t]);}
+  $('#sumTbl').innerHTML=rows.map(([x,y])=>`<tr><td>${x}</td><td>${y}</td></tr>`).join('');}
+
+// ===== URL / QR =====
+const baseURL=()=>location.origin+location.pathname;
+const enc=s=>encodeURIComponent(s||'');
+const answerString=()=>[[a.night,a.mild,a.strong,a.vrest,a.vmove,...a.adl].map(v=>v??'').join('.')+'|'+enc($('#a_work').value)+'|'+enc($('#a_sport').value)+'|'+enc($('#a_pills').value),[...k.func,k.pain,k.self].map(v=>v??'').join('.'),[c.pain,c.work,c.rec,c.sleep,c.height].map(v=>v??'').join('.')].join('~');
+const useString=()=>(use.ases?'a':'')+(use.kss?'k':'')+(use.cs?'c':'');
+const patientURL=()=>{const r=info();return baseURL()+'?'+new URLSearchParams({mode:'patient',...r,u:useString()});};
+const resultURL=()=>{const r=info();return baseURL()+'?'+new URLSearchParams({...r,u:useString(),a:answerString()});};
+const makeQR=(el,t)=>{el.innerHTML='';new QRCode(el,{text:t,width:220,height:220,correctLevel:QRCode.CorrectLevel.L});};
+$('#bQR').onclick=()=>{if(!$('#pid').value){alert('등록번호를 먼저 입력하세요.');return;}readUse();$('#qrbox').classList.remove('hidden');makeQR($('#qr'),patientURL());$('#qrurl').textContent=patientURL();};
+$('#bLink').onclick=()=>{if(!$('#pid').value){alert('등록번호를 먼저 입력하세요.');return;}readUse();navigator.clipboard.writeText(patientURL()).then(()=>{$('#bLink').textContent='복사됨';setTimeout(()=>$('#bLink').textContent='링크 복사',1200);});};
+
+// ===== 완료 =====
+const dl=(name,text,type)=>{const el=document.createElement('a');el.href=URL.createObjectURL(new Blob([text],{type}));el.download=name;el.click();};
+const fname=ext=>{const r=info();return `SHOULDER_${r.pid||'noid'}_${r.visit||'visit'}_${r.date}.${ext}`;};
+$('#bJSON').onclick=()=>dl(fname('json'),JSON.stringify(record(),null,2),'application/json');
+$('#bCSV').onclick=()=>{const r=record();dl(fname('csv'),'﻿'+Object.keys(r).join(',')+'\n'+Object.values(r).map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','),'text/csv');};
+$('#bCopy').onclick=()=>navigator.clipboard.writeText(emrText()).then(()=>{$('#bCopy').textContent='복사됨';setTimeout(()=>$('#bCopy').textContent='EMR 형식 복사',1200);});
+$('#bPrint').onclick=()=>window.print();$('#bNew').onclick=()=>location.href=baseURL();
+async function send(){if(!SAVE_URL){$('#sendHint').textContent='SAVE_URL이 비어 있어 시트 저장은 꺼져 있습니다. (파일 상단 설정)';return false;}
+  try{await fetch(SAVE_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(record())});$('#sendHint').textContent='시트로 전송됨 '+new Date().toLocaleTimeString();return true;}catch(e){$('#sendHint').textContent='전송 실패: '+e.message;return false;}}
+$('#bSend').onclick=send;
+function onDone(){const patient=MODE==='patient';
+  $('#staffCard').classList.toggle('hidden',patient);$('#kssClin').classList.toggle('hidden',patient||!use.kss);$('#csClin').classList.toggle('hidden',patient||!use.cs);$('#toolCard').classList.toggle('hidden',patient);
+  $('#qr2box').classList.toggle('hidden',!patient);$('#doneMsg').textContent=patient?'진료 당일 접수 시 아래 QR 코드를 보여주시면 됩니다.':'태블릿을 직원에게 돌려주세요.';
+  if(patient)makeQR($('#qr2'),resultURL());
+  send();
+  if(AUTO_RESET_SEC&&!patient)setTimeout(()=>location.href=baseURL(),AUTO_RESET_SEC*1000);}
+
+// ===== 초기화 =====
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+$('#pdate').value=today();
+if(P.get('pid'))$('#pid').value=P.get('pid');if(P.get('name'))$('#pname').value=P.get('name');if(P.get('date'))$('#pdate').value=P.get('date');
+if(P.get('side'))seg.side=P.get('side');if(P.get('visit'))seg.visit=P.get('visit');
+if(P.get('u')){use.ases=P.get('u').includes('a');use.kss=P.get('u').includes('k');use.cs=P.get('u').includes('c');$('#useASES').checked=use.ases;$('#useKSS').checked=use.kss;$('#useCS').checked=use.cs;}
+if(MODE==='patient'){$('#modeTag').textContent='환자 입력';$('#qrCard').classList.add('hidden');if(P.get('pid')){$('#pid').readOnly=true;$('#pname').readOnly=true;}else{$('#pid').placeholder='진료카드/접수증의 등록번호';}$('#bStart').textContent='설문 시작 →';}
+buildPages();
+if(P.get('a')){const [as,ks,cs]=P.get('a').split('~');
+  if(as){const [nums,w,s,p]=as.split('|');const v=nums.split('.').map(n);[a.night,a.mild,a.strong,a.vrest,a.vmove]=v.slice(0,5);v.slice(5,15).forEach((x,i)=>a.adl[i]=x);$('#a_work').value=decodeURIComponent(w||'');$('#a_sport').value=decodeURIComponent(s||'');$('#a_pills').value=decodeURIComponent(p||'');}
+  if(ks){const v=ks.split('.').map(n);v.slice(0,10).forEach((x,i)=>k.func[i]=x);k.pain=v[10]??null;k.self=v[11]??null;}
+  if(cs){const v=cs.split('.').map(n);[c.pain,c.work,c.rec,c.sleep,c.height]=v;}
+  go(pages.length-1);}else go(0);
+})();
+</script></body></html>
